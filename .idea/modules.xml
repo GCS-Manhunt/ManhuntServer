@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Manhunt - Server.iml" filepath="$PROJECT_DIR$/Manhunt - Server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ManhuntServer.iml" filepath="$PROJECT_DIR$/ManhuntServer.iml" />
     </modules>
   </component>
 </project>

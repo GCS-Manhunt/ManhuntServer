@@ -7,11 +7,15 @@ public class Player {
     public final UUID uuid;
     private double[] location;
     public final String uname;
+    public boolean seeker;
+    public boolean status;
 
     public Player(UUID uuid, String uname){
         this.uuid = uuid;
         this.uname = uname;
         this.location = new double[2];
+        seeker = false;
+        status = true;
     }
 
     public double[] getLocation() {
@@ -50,6 +54,14 @@ public class Player {
         double x = (cos(this.location[0]) * sin(p.getLocation()[0])) -
                 (sin(this.location[0]) * cos(p.getLocation()[0]) * cos(p.getLocation()[1]-p.location[0]));
         double y = sin(p.getLocation()[1]-this.location[1]) * cos(p.getLocation()[0]);
+        double h = toDegrees(atan2(y, x));
+        return h;
+    }
+
+    public double heading(double lat, double lon){
+        double x = (cos(lat) * sin(lat)) -
+                (sin(lat) * cos(lat) * cos(lon-lat));
+        double y = sin(lon-this.location[1]) * cos(lat);
         double h = toDegrees(atan2(y, x));
         return h;
     }

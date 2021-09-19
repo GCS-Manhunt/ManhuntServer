@@ -18,7 +18,7 @@ public class Player {
         this.uuid = uuid;
         this.uname = uname;
         this.location = new double[2];
-        this.type = type;
+        // this.type = type;
     }
 
     public double[] getLocation() {

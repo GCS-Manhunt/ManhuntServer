@@ -14,12 +14,6 @@ public class Player {
         this.location = new double[2];
     }
 
-    public Player(UUID uuid, String uname, String type){
-        this.uuid = uuid;
-        this.uname = uname;
-        this.location = new double[2];
-    }
-
     public double[] getLocation() {
         return new double[]{toDegrees(location[0]),toDegrees(location[1])};
     }

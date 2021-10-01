@@ -18,6 +18,10 @@ public class Player {
         status = true;
     }
 
+    public String toString(){
+        return "Player<Name: "+this.uname+", UUID: "+this.uuid.toString()+">";
+    }
+
     public double[] getLocation() {
         return new double[]{toDegrees(location[0]),toDegrees(location[1]),location[2]};
     }

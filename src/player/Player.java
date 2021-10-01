@@ -1,4 +1,4 @@
-package Player;
+package player;
 
 import java.util.UUID;
 import static java.lang.Math.*;
@@ -13,18 +13,19 @@ public class Player {
     public Player(UUID uuid, String uname){
         this.uuid = uuid;
         this.uname = uname;
-        this.location = new double[2];
+        this.location = new double[3];
         seeker = false;
         status = true;
     }
 
     public double[] getLocation() {
-        return new double[]{toDegrees(location[0]),toDegrees(location[1])};
+        return new double[]{toDegrees(location[0]),toDegrees(location[1]),location[2]};
     }
 
     public void setLocation(double[] location) {
         this.location[0] = toRadians(location[0]);
         this.location[1] = toRadians(location[1]);
+        this.location[2] = location[2];
     }
 
     /*
@@ -40,7 +41,7 @@ public class Player {
         double a = pow(sin(deltalat/2),2) + (cos(this.location[0]) * cos(p.getLocation()[0]) * pow(sin(deltalon/2),2));
         double c = 2 * atan2(sqrt(a), sqrt(1-a));
         double d = 6371000 * c;
-        return d;
+        return d + abs(this.location[2] - p.location[3]);
     }
 
     /*

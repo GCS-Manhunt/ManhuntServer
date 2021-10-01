@@ -1,6 +1,6 @@
-package Engine;
+package engine;
 
-import Player.*;
+import player.*;
 
 public class GeoFence {
 
@@ -10,6 +10,7 @@ public class GeoFence {
         this.points = points;
     }
 
+    //Stolen off internet Maybe works
     public boolean in(Player p){
         int i, j;
         boolean result = false;

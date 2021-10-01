@@ -51,7 +51,7 @@ public class EventSendClientDetails extends PersonalEvent implements IServerThre
 	@Override
 	public void execute(ServerHandler s)
 	{
-		System.out.println("hi");
+		System.out.println(this.clientID.toString() + " just joined!");
 		s.sendEventAndClose(new EventKick("Connection success!"));
 	}
 }

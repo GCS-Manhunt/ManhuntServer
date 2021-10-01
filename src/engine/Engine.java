@@ -1,6 +1,6 @@
-package Engine;
+package engine;
 
-import Player.*;
+import player.*;
 
 import java.util.*;
 

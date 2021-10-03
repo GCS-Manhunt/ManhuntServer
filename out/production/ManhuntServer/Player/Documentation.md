@@ -1,10 +1,10 @@
-# Player Package
+# player Package
 
-## class Player
+## class player
 
-#### Player(UUID uuid, String username)
+#### player(UUID uuid, String username)
 
-#### Player(UUID uuid, String username, String type)
+#### player(UUID uuid, String username, String type)
 
 ### public final UUID uuid
 
@@ -18,30 +18,30 @@
 
 #### set the location by providing a double array of length 2 with {latitude, longitude}
 
-### double distance(Player p)
+### double distance(player p)
 
-#### returns distance between current player and Player p
+#### returns distance between current player and player p
 
-### double heading(Player p)
+### double heading(player p)
 
-#### returns heading from current player to Player p
+#### returns heading from current player to player p
 
 ## class PlayerSet
 
 #### PlayerSet(int capacity)
 
-### void addPlayer(Player p)
+### void addPlayer(player p)
 
-#### add Player to Playerset
+#### add player to Playerset
 
-### Player removePlayer(UUID uuid)
+### player removePlayer(UUID uuid)
 
-#### returns Player with UUID uuid
+#### returns player with UUID uuid
 
-###  Player getPlayer(UUID uuid)
+###  player getPlayer(UUID uuid)
 
-#### returns Player with UUID uuid
+#### returns player with UUID uuid
 
-###  Player[] getNClosest(UUID origin, int n)
+###  player[] getNClosest(UUID origin, int n)
 
 #### returns an array with the top n closest Players

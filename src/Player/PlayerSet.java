@@ -1,4 +1,4 @@
-package Player;
+package player;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -42,6 +42,7 @@ public class PlayerSet {
         for(int i = 0; i < uuids.size(); i++){
             if(!playerList.containsKey(uuids.get(i))){
                 uuids.remove(i);
+                i--; //don't skip players after remove uuid;  
             }
         }
     }

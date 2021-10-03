@@ -5,8 +5,10 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.ReferenceCountUtil;
+import main.Main;
 import network.event.EventPing;
 import network.event.INetworkEvent;
+import player.Player;
 
 import java.util.UUID;
 
@@ -20,6 +22,8 @@ public class ServerHandler extends ChannelInboundHandlerAdapter
 	public Server server;
 
 	public UUID clientID;
+
+	public Player player;
 
 	public long lastMessage = -1;
 	public long latency = 0;
@@ -132,13 +136,20 @@ public class ServerHandler extends ChannelInboundHandlerAdapter
 		ReferenceCountUtil.release(b);
 	}
 
-	public synchronized void sendEventAndClose(INetworkEvent e)
+	public synchronized Player sendEventAndClose(INetworkEvent e)
 	{
 		this.closed = true;
 		this.sendEvent(e);
+		synchronized (Main.playersDelQueue){
+			if(player != null) {
+				Main.playersDelQueue.add(player);
+			}
+		}
 
 		if (ctx != null)
 			ctx.close();
+
+		return this.player;
 	}
 
 	@Override

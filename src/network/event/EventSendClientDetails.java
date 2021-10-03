@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import network.NetworkUtils;
 import network.ServerHandler;
 import player.Player;
+import main.Main;
 
 import java.util.UUID;
 
@@ -52,8 +53,10 @@ public class EventSendClientDetails extends PersonalEvent implements IServerThre
 	@Override
 	public void execute(ServerHandler s)
 	{
-		Player p = new Player(this.clientID, this.username);
-		System.out.println(p.toString() + " just joined!");
-		s.sendEventAndClose(new EventKick("LMAO, you got kicked!"));
+		s.player = new Player(this.clientID, this.username);
+		synchronized (Main.playersAddQueue){
+			Main.playersAddQueue.add(s.player);
+		}
+		System.out.println(s.sendEventAndClose(new EventKick("LMAO, you got kicked!")).toString() + " just joined!");
 	}
 }

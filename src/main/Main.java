@@ -4,9 +4,7 @@ import engine.Engine;
 import network.NetworkEventMap;
 import network.Server;
 import network.SynchronizedList;
-import network.event.EventKick;
-import network.event.EventPing;
-import network.event.EventSendClientDetails;
+import network.event.*;
 import player.Player;
 
 import java.sql.Array;
@@ -16,7 +14,7 @@ public class Main {
 
     public static ArrayList<Player> playersAddQueue;
     public static ArrayList<Player> playersDelQueue;
-    private static Engine engine;
+    public static Engine engine;
 
     public static void main(String[] args) {
         //Initialize Queues
@@ -32,6 +30,10 @@ public class Main {
         NetworkEventMap.register(EventPing.class);
         NetworkEventMap.register(EventSendClientDetails.class);
         NetworkEventMap.register(EventKick.class);
+        NetworkEventMap.register(EventAcceptConnection.class);
+        NetworkEventMap.register(EventSendPlayerIdentity.class);
+
+
 
         //Server Start
         new Thread(){
@@ -40,6 +42,11 @@ public class Main {
                 new Server(8080).run();
             }
         }.start();
+
+        boolean run = true;
+        while(run){
+            syncQueues();
+        }
     }
 
     public static void syncQueues(){

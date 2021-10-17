@@ -10,3 +10,5 @@ public interface INetworkEvent extends IEvent
 	
 	void execute();
 }
+
+

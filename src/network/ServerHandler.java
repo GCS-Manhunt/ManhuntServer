@@ -49,10 +49,14 @@ public class ServerHandler extends ChannelInboundHandlerAdapter
 	{
 		this.ctx = ctx;
 
-		if (ctx != null)
-			this.reader.queue = ctx.channel().alloc().buffer();
-		else
+		if (ctx != null){
+			this.reader.queue = ctx.channel().alloc().buffer();}
+		else {
 			this.reader.queue = Unpooled.buffer();
+		}
+
+		//when player connect set the status to be true
+		System.out.println("someone connected");
 	}
 
 	// SERVERSIDE: When a client disconnects
@@ -61,6 +65,11 @@ public class ServerHandler extends ChannelInboundHandlerAdapter
 	{
 		ReferenceCountUtil.release(this.reader.queue);
 		server.connections.remove(this);
+
+		//when player disconnect their status are false
+		System.out.println("someone disconnected: "+this.player.uuid);
+		this.player.status = false;
+
 	}
 
 	// Packet received

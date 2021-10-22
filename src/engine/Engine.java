@@ -8,13 +8,17 @@ public class Engine {
 
     public PlayerSet hiders;
     public PlayerSet seekers;
-    public PlayerSet quarentined;
+    public PlayerSet quarantined;
     public GeoFence fence;
+    public int[] startTime;
+
+
 
     public Engine(int capacity){
         hiders = new PlayerSet(capacity);
         seekers = new PlayerSet(capacity);
-        quarentined = new PlayerSet(capacity);
+        quarantined = new PlayerSet(capacity);
+        startTime = new int[] {0, 0};
     }
 
     public void addPlayer(Player p){
@@ -44,33 +48,33 @@ public class Engine {
     public void inFence(){
         for(UUID uuid : seekers.uuids){
             if(!fence.in(seekers.getPlayer(uuid))){
-                quarentined.addPlayer(seekers.removePlayer(uuid));
+                quarantined.addPlayer(seekers.removePlayer(uuid));
             }
         }
         for(UUID uuid : hiders.uuids){
             if(!fence.in(hiders.getPlayer(uuid))){
-                quarentined.addPlayer(hiders.removePlayer(uuid));
+                quarantined.addPlayer(hiders.removePlayer(uuid));
             }
         }
     }
 
-    public void disconnected(){
+    public void checkDisconnect(){
         for(UUID uuid : seekers.uuids){
             if(!seekers.getPlayer(uuid).status){
-                quarentined.addPlayer(seekers.removePlayer(uuid));
+                quarantined.addPlayer(seekers.removePlayer(uuid));
             }
         }
         for(UUID uuid : hiders.uuids){
             if(!hiders.getPlayer(uuid).status){
-                quarentined.addPlayer(hiders.removePlayer(uuid));
+                quarantined.addPlayer(hiders.removePlayer(uuid));
             }
         }
     }
 
-    public void rejoin(){
-        for(UUID uuid : quarentined.uuids){
-            if(fence.in(quarentined.getPlayer(uuid))){
-                Player p = quarentined.removePlayer(uuid);
+    public void checkRejoin(){
+        for(UUID uuid : quarantined.uuids){
+            if(fence.in(quarantined.getPlayer(uuid))){
+                Player p = quarantined.removePlayer(uuid);
                 if(p.seeker && p.status){
                     seekers.addPlayer(p);
                 }else if(p.status){

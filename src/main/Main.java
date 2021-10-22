@@ -43,9 +43,12 @@ public class Main {
             }
         }.start();
 
+        //main game loop
         boolean run = true;
         while(run){
             syncQueues();
+            engine.checkDisconnect();
+            engine.checkRejoin();
         }
     }
 

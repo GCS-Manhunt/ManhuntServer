@@ -42,7 +42,11 @@ public class PlayerSet {
         for(int i = 0; i < uuids.size(); i++){
             if(!playerList.containsKey(uuids.get(i))){
                 uuids.remove(i);
+<<<<<<< HEAD
                 i--; //don't skip players after remove uuid;
+=======
+                i--;//don't skip player after remove uuid;
+>>>>>>> e2db72b068cf83a70cdfb742e2c55c75cf345de7
             }
         }
     }
@@ -51,7 +55,9 @@ public class PlayerSet {
         return playerList.get(uuid);
     }
 
-    //returns the N closest players to a source player
+    //returns the N closest players to a s
+    //
+    // ource player
 
     public Player[] getNClosest(UUID origin, int n){
         ArrayList<Player> players = new ArrayList<Player>();
@@ -69,4 +75,7 @@ public class PlayerSet {
         return players.toArray(new Player[players.size()]);
     }
 
+    public String toString(){
+        return this.playerList.toString();
+    }
 }

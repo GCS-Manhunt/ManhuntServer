@@ -57,6 +57,12 @@ public class EventSendClientDetails extends PersonalEvent implements IServerThre
 		synchronized (Main.playersAddQueue){
 			Main.playersAddQueue.add(s.player);
 		}
-		System.out.println(s.sendEventAndClose(new EventKick("LMAO, you got kicked!")).toString() + " just joined!");
+		String[] rules = new String[] {"code", "code", "code", "and code"};
+		s.sendEvent(new EventAcceptConnection("ManHunt", "Hunt A13",
+				"Sunday 2pm", rules));
+		System.out.println(s.player.toString() + " just joined!");
+		System.out.println(Main.engine.seekers);
+		System.out.println(Main.engine.hiders);
+		System.out.println(Main.engine.quarentined);
 	}
 }

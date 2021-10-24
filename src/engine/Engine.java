@@ -20,6 +20,7 @@ public class Engine {
     public void addPlayer(Player p){
         if(p.seeker){
             seekers.addPlayer(p);
+            System.out.println("seeker added"+p.toString());
         }else{
             hiders.addPlayer(p);
         }

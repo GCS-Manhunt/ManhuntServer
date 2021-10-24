@@ -71,6 +71,12 @@ public class PlayerSet {
         return players.toArray(new Player[players.size()]);
     }
 
+    public boolean inRange(UUID origin, UUID target, double dist){
+        Player o = getPlayer(origin);
+        Player t = getPlayer(target);
+        return o.distance(t) < dist;
+    }
+
     public String toString(){
         return this.playerList.toString();
     }

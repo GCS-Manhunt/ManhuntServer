@@ -19,6 +19,7 @@ public class Main {
     public static Server server;
     public static final boolean RUN = true;
     public static final int NDISPLAY = 3;
+    public static final double INRANGE = 10;
 
     public static void main(String[] args) {
         //Initialize Queues
@@ -62,6 +63,8 @@ public class Main {
             eventsIn.clear();
         }
     }
+
+
 
     public static void sendHeadings(){
         if(server == null){

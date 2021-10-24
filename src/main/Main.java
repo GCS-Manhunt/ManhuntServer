@@ -10,11 +10,16 @@ import player.Player;
 import java.sql.Array;
 import java.util.ArrayList;
 
+import static network.Server.eventsIn;
+
 public class Main {
 
     public static ArrayList<Player> playersAddQueue;
     public static ArrayList<Player> playersDelQueue;
     public static Engine engine;
+    public static Server server;
+    public static final boolean RUN = true;
+    public static final int NDISPLAY = 3;
 
     public static void main(String[] args) {
         //Initialize Queues
@@ -36,16 +41,41 @@ public class Main {
 
 
         //Server Start
+
         new Thread(){
             @Override
             public void run() {
-                new Server(8080).run();
+                server = new Server(8080).run();
             }
         }.start();
 
-        boolean run = true;
-        while(run){
+        while(RUN){
             syncQueues();
+            executeEvents();
+            sendHeadings();
+        }
+    }
+
+    public static void executeEvents(){
+        synchronized (eventsIn){
+            for(int i = 0; i < eventsIn.size(); i++) {
+                eventsIn.get(i).execute();
+            }
+            eventsIn.clear();
+        }
+    }
+
+    public static void sendHeadings(){
+        synchronized (server.connections){
+            for(int i = 0; i < server.connections.size(); i++){
+                Player player = engine.seekers.getPlayer(server.connections.get(i).clientID);
+                if(player != null){
+                    Player[] closest = engine.seekers.getNClosest(player.uuid, NDISPLAY);
+                    for(Player p : closest) {
+                        server.connections.get(i).sendEvent(new EventSendHeading(player.heading(p), p.uuid));
+                    }
+                }
+            }
         }
     }
 

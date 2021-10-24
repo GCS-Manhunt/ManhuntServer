@@ -28,7 +28,7 @@ public class Server
 		this.port = port;
 	}
 
-	public void run()
+	public Server run()
 	{
 		bossGroup = new NioEventLoopGroup();
 		workerGroup = new NioEventLoopGroup();
@@ -60,6 +60,7 @@ public class Server
 		{
 			close();
 		}
+		return this;
 	}
 
 	public void close()

@@ -32,19 +32,6 @@ public class Engine {
         seekers.addPlayer(p);
     }
 
-    public void makeRandomSeeker(){
-        int size = hiders.playerList.size();
-        int player = (int)(Math.random()*size); //returns a random integer between 0 (inclusive) and size (exclusive)
-        int i = 0;
-        for(UUID id : hiders.playerList.keySet()) {
-            if(i==player) {
-                makeSeeker(id);
-                break;
-            }
-            i++;
-        }
-    }
-
     public Player kickPlayer(UUID uuid){
         Player p = null;
         p = seekers.removePlayer(uuid);

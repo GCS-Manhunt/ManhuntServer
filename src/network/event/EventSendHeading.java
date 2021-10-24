@@ -5,13 +5,14 @@ import main.Main;
 import network.NetworkUtils;
 import network.ServerHandler;
 import player.Player;
-
 import java.util.UUID;
+
 
 public class EventSendHeading implements INetworkEvent
 {
 
     public double heading;
+
     public UUID uuid;
 
     public EventSendHeading() {}

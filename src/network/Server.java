@@ -56,7 +56,7 @@ public class Server
 		{
 			e.printStackTrace();
 		}
-		finally 
+		finally
 		{
 			close();
 		}
@@ -64,12 +64,12 @@ public class Server
 	}
 
 	public void close()
-	{  
+	{
 		this.close("The host has ended the party");
 	}
-	
+
 	public void close(String reason)
-	{    	
+	{
 		synchronized(this.connections)
 		{
 			for (int i = 0; i < this.connections.size(); i++)
@@ -82,5 +82,5 @@ public class Server
 			bossGroup.shutdownGracefully();
 			connections.clear();
 		}
-	}    
+	}
 }

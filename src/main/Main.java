@@ -9,7 +9,6 @@ import player.Player;
 
 import java.sql.Array;
 import java.util.ArrayList;
-
 import static network.Server.eventsIn;
 
 public class Main {
@@ -41,7 +40,6 @@ public class Main {
 
 
         //Server Start
-
         new Thread(){
             @Override
             public void run() {
@@ -66,13 +64,18 @@ public class Main {
     }
 
     public static void sendHeadings(){
-        synchronized (server.connections){
-            for(int i = 0; i < server.connections.size(); i++){
+        if(server == null){
+            return;
+        }
+        synchronized (server.connections) {
+            for (int i = 0; i < server.connections.size(); i++) {
                 Player player = engine.seekers.getPlayer(server.connections.get(i).clientID);
-                if(player != null){
+                if (player != null) {
                     Player[] closest = engine.seekers.getNClosest(player.uuid, NDISPLAY);
-                    for(Player p : closest) {
-                        server.connections.get(i).sendEvent(new EventSendHeading(player.heading(p), p.uuid));
+                    for (Player p : closest) {
+                        synchronized (server.connections.get(i).events) {
+                            server.connections.get(i).events.add(new EventSendHeading(player.heading(p), p.uuid));
+                        }
                     }
                 }
             }

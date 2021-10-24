@@ -22,6 +22,4 @@ public class GeoFence {
         }
         return result;
     }
-
-
 }

@@ -10,11 +10,15 @@ public class Engine {
     public PlayerSet seekers;
     public PlayerSet quarantined;
     public GeoFence fence;
+    public int[] startTime;
+
+
 
     public Engine(int capacity){
         hiders = new PlayerSet(capacity);
         seekers = new PlayerSet(capacity);
         quarantined = new PlayerSet(capacity);
+        startTime = new int[] {0, 0};
     }
 
     public void addPlayer(Player p){
@@ -67,7 +71,7 @@ public class Engine {
         }
     }
 
-    public void disconnected(){
+    public void checkDisconnect(){
         for(UUID uuid : seekers.uuids){
             if(!seekers.getPlayer(uuid).status){
                 quarantined.addPlayer(seekers.removePlayer(uuid));
@@ -80,7 +84,7 @@ public class Engine {
         }
     }
 
-    public void rejoin(){
+    public void checkRejoin(){
         for(UUID uuid : quarantined.uuids){
             if(fence.in(quarantined.getPlayer(uuid))){
                 Player p = quarantined.removePlayer(uuid);

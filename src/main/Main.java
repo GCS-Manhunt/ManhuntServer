@@ -52,6 +52,8 @@ public class Main {
             syncQueues();
             executeEvents();
             sendHeadings();
+            engine.checkDisconnect();
+            engine.checkRejoin();
         }
     }
 

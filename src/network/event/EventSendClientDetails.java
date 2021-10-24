@@ -53,7 +53,14 @@ public class EventSendClientDetails extends PersonalEvent implements IServerThre
 	@Override
 	public void execute(ServerHandler s)
 	{
-		s.player = new Player(this.clientID, this.username);
+		if (Main.engine.quarantined.getPlayer(this.clientID) != null){
+			//check if the used to be connected
+			s.player = Main.engine.quarantined.getPlayer(this.clientID);
+		}else{
+			//if he the player has never connected before.
+			s.player = new Player(this.clientID, this.username);
+		}
+
 		synchronized (Main.playersAddQueue){
 			Main.playersAddQueue.add(s.player);
 		}
@@ -61,5 +68,8 @@ public class EventSendClientDetails extends PersonalEvent implements IServerThre
 		s.sendEvent(new EventAcceptConnection("ManHunt", "Hunt A13",
 				"Sunday 2pm", rules));
 		System.out.println(s.player.toString() + " just joined!");
+		System.out.println(Main.engine.seekers);
+		System.out.println(Main.engine.hiders);
+		System.out.println(Main.engine.quarantined);
 	}
 }

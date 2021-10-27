@@ -36,9 +36,12 @@ public class EventSendLocation extends PersonalEvent{
     @Override
     public void execute() {
         UUID uuid = this.clientID;
-        Player player = Main.engine.hiders.playerList.get(uuid);
+        if(uuid == null){
+            return;
+        }
+        Player player = Main.engine.hiders.getPlayer(uuid);
         if(player == null) {
-            player = Main.engine.seekers.playerList.get(uuid);
+            player = Main.engine.seekers.getPlayer(uuid);
         }
         if(player == null) {
             return;

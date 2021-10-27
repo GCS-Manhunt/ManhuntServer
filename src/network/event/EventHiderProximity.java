@@ -3,29 +3,28 @@ package network.event;
 import io.netty.buffer.ByteBuf;
 import network.NetworkUtils;
 
-public class EventPlayersProximity extends PersonalEvent{
+import java.util.UUID;
 
-    //send username of hider
-    //send boolean true if proximity
+public class EventHiderProximity extends PersonalEvent{
 
-    public String username;
+    public UUID uuid;
     public boolean proximity;
 
-    public EventPlayersProximity(String username, boolean proximity) {
-        this.username = username;
+    public EventHiderProximity(UUID uuid, boolean proximity) {
         this.proximity = proximity;
+        this.uuid = uuid;
     }
 
 
     @Override
     public void write(ByteBuf b) {
-        NetworkUtils.writeString(b, this.username);
+        NetworkUtils.writeString(b, this.uuid.toString());
         b.writeBoolean(this.proximity);
     }
 
     @Override
     public void read(ByteBuf b) {
-        this.username = NetworkUtils.readString(b);
+        this.uuid = UUID.fromString(NetworkUtils.readString(b));
         this.proximity = b.readBoolean();
     }
 

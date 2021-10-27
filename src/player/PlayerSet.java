@@ -1,8 +1,6 @@
 package player;
 
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.UUID;
+import java.util.*;
 
 public class PlayerSet {
     public int capacity;
@@ -53,7 +51,7 @@ public class PlayerSet {
 
     //returns the N closest players to a s
     //
-    // ource player
+    // Source player
 
     public Player[] getNClosest(UUID origin, int n){
         ArrayList<Player> players = new ArrayList<Player>();
@@ -70,6 +68,22 @@ public class PlayerSet {
         }
         return players.toArray(new Player[players.size()]);
     }
+
+    public Player[] getRelaventPlayers(UUID origin, int max){
+        if(max < 1){
+            return null;
+        }
+        ArrayList<Player> nclosest = new ArrayList<Player>(Arrays.asList(getNClosest(origin, max)));
+        double adist = nclosest.get(0).distance(getPlayer(origin));
+        int i = 1;
+        while (i < nclosest.size()){
+            if (nclosest.get(i).distance(getPlayer(origin)) > 1.5 * adist){
+                nclosest.remove(i);
+            }
+        }
+        return nclosest.toArray(new Player[nclosest.size()]);
+    }
+
 
     public boolean inRange(UUID origin, UUID target, double dist){
         Player o = getPlayer(origin);

@@ -9,6 +9,8 @@ import player.Player;
 
 import java.sql.Array;
 import java.util.ArrayList;
+import java.util.UUID;
+
 import static network.Server.eventsIn;
 
 public class Main {
@@ -37,25 +39,61 @@ public class Main {
         NetworkEventMap.register(EventKick.class);
         NetworkEventMap.register(EventAcceptConnection.class);
         NetworkEventMap.register(EventSendPlayerIdentity.class);
-
+        NetworkEventMap.register(EventSendLocation.class);
+        NetworkEventMap.register(EventSendHeading.class);
+        NetworkEventMap.register(EventSeekerProximity.class);
+        NetworkEventMap.register(EventHiderProximity.class);
 
 
         //Server Start
-        new Thread(){
+        new Thread() {
             @Override
             public void run() {
                 server = new Server(8080).run();
             }
         }.start();
 
-        while(RUN){
+        while (RUN) {
             syncQueues();
             executeEvents();
             sendHeadings();
+            checkInRange();
             engine.checkDisconnect();
             engine.checkRejoin();
         }
     }
+
+    private static void checkInRange() {
+        for (UUID p1 : engine.seekers.uuids) {
+            for (UUID p2 : engine.hiders.uuids) {
+                if (engine.seekers.inRange(p1, p2, INRANGE)) {
+                    sendInRange(p1, p2);
+                    break;
+                }
+
+            }
+        }
+    }
+
+    private static void sendInRange(UUID origin, UUID target) {
+        if (server == null) {
+            return;
+        }
+        synchronized (server.connections) {
+            for (int i = 0; i < server.connections.size(); i++) {
+                if(server.connections.get(i).clientID == origin){
+                    synchronized (server.connections.get(i).events) {
+                        server.connections.get(i).events.add(new EventSeekerProximity(engine.hiders.getPlayer(target).uname, target, true));
+                    }
+                }else if (server.connections.get(i).clientID == target){
+                    synchronized (server.connections.get(i).events) {
+                        server.connections.get(i).events.add(new EventHiderProximity(origin, true));
+                    }
+                }
+            }
+        }
+    }
+
 
     public static void executeEvents(){
         synchronized (eventsIn){
@@ -76,7 +114,7 @@ public class Main {
             for (int i = 0; i < server.connections.size(); i++) {
                 Player player = engine.seekers.getPlayer(server.connections.get(i).clientID);
                 if (player != null) {
-                    Player[] closest = engine.seekers.getNClosest(player.uuid, NDISPLAY);
+                    Player[] closest = engine.seekers.getRelaventPlayers(player.uuid, NDISPLAY);
                     for (Player p : closest) {
                         synchronized (server.connections.get(i).events) {
                             server.connections.get(i).events.add(new EventSendHeading(player.heading(p), p.uuid));

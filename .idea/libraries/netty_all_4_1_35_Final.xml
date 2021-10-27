@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="netty-all-4.1.35.Final">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/netty-all-4.1.35.Final.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

@@ -10,6 +10,10 @@ public class EventHiderProximity extends PersonalEvent{
     public UUID uuid;
     public boolean proximity;
 
+    public EventHiderProximity(){
+
+    }
+
     public EventHiderProximity(UUID uuid, boolean proximity) {
         this.proximity = proximity;
         this.uuid = uuid;

@@ -88,10 +88,8 @@ public class PlayerSet {
     }
 
 
-    public boolean inRange(UUID origin, UUID target, double dist){
-        Player o = getPlayer(origin);
-        Player t = getPlayer(target);
-        return o.distance(t) < dist;
+    public static boolean inRange(Player origin, Player target, double dist){
+        return origin.distance(target) < dist;
     }
 
     public String toString(){

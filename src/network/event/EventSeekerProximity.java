@@ -11,6 +11,9 @@ public class EventSeekerProximity extends PersonalEvent{
     public UUID uuid;
     public boolean proximity;
 
+    public EventSeekerProximity(){
+    }
+
     public EventSeekerProximity(String username, UUID uuid, boolean proximity) {
         this.username = username;
         this.proximity = proximity;

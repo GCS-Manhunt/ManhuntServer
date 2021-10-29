@@ -4,7 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="833ef7ed-6be0-454b-aee9-cba9e3c68c00" name="Changes" comment="" />
+    <list default="true" id="833ef7ed-6be0-454b-aee9-cba9e3c68c00" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/network/event/EventHiderProximity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/network/event/EventHiderProximity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/network/event/EventSeekerProximity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/network/event/EventSeekerProximity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/network/event/EventSendClientDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/network/event/EventSendClientDetails.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/player/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/player/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/player/PlayerSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/player/PlayerSet.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

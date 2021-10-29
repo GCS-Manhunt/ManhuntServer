@@ -50,6 +50,7 @@ public class Player {
         double a = pow(sin(deltalat/2),2) + (cos(this.location[0]) * cos(p.getLocation()[0]) * pow(sin(deltalon/2),2));
         double c = 2 * atan2(sqrt(a), sqrt(1-a));
         double d = 6371000 * c;
+        System.out.println(d + abs(this.location[2] - p.location[2]));
         return d + abs(this.location[2] - p.location[2]);
     }
 

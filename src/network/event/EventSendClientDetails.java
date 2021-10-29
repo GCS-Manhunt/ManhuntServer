@@ -76,8 +76,5 @@ public class EventSendClientDetails extends PersonalEvent implements IServerThre
 		s.sendEvent(new EventAcceptConnection("ManHunt", "Hunt A13",
 				"Sunday 2pm", rules));
 		System.out.println(s.player.toString() + " just joined!");
-		System.out.println(Main.engine.seekers);
-		System.out.println(Main.engine.hiders);
-		System.out.println(Main.engine.quarantined);
 	}
 }

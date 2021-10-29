@@ -7,8 +7,12 @@ import network.SynchronizedList;
 import network.event.*;
 import player.Player;
 
+import javax.swing.plaf.synth.SynthTextAreaUI;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.UUID;
 
 import static network.Server.eventsIn;
@@ -44,20 +48,33 @@ public class Main {
         NetworkEventMap.register(EventSeekerProximity.class);
         NetworkEventMap.register(EventHiderProximity.class);
 
+        //Print IP before init
+        InetAddress ip;
+        try {
+            ip = InetAddress.getLocalHost();
+            System.out.println("Running @"+ ip);
+
+        } catch (UnknownHostException e) {
+
+            e.printStackTrace();
+        }
+
 
         //Server Start
         new Thread() {
             @Override
             public void run() {
-                server = new Server(8080).run();
+                server = new Server(8080);
+                server.run();
             }
         }.start();
 
         while (RUN) {
             syncQueues();
             executeEvents();
+            sendEvents();
             sendHeadings();
-            checkInRange();
+            //checkInRange(); -- Uncomment after fix
             engine.checkDisconnect();
             engine.checkRejoin();
         }
@@ -66,7 +83,7 @@ public class Main {
     private static void checkInRange() {
         for (UUID p1 : engine.seekers.uuids) {
             for (UUID p2 : engine.hiders.uuids) {
-                if (engine.seekers.inRange(p1, p2, INRANGE)) {
+                if (p1 != null && p2 != null && engine.seekers.inRange(p1, p2, INRANGE)) {
                     sendInRange(p1, p2);
                     break;
                 }
@@ -104,6 +121,16 @@ public class Main {
         }
     }
 
+    public static void sendEvents(){
+        if(server == null){
+            return;
+        }
+        synchronized (server.connections) {
+            for (int i = 0; i < server.connections.size(); i++) {
+                server.connections.get(i).reply();
+            }
+        }
+    }
 
 
     public static void sendHeadings(){
@@ -114,7 +141,10 @@ public class Main {
             for (int i = 0; i < server.connections.size(); i++) {
                 Player player = engine.seekers.getPlayer(server.connections.get(i).clientID);
                 if (player != null) {
-                    Player[] closest = engine.seekers.getRelaventPlayers(player.uuid, NDISPLAY);
+                    Player[] closest = engine.hiders.getRelaventPlayers(player, NDISPLAY);
+                    if(closest == null){
+                        return;
+                    }
                     for (Player p : closest) {
                         synchronized (server.connections.get(i).events) {
                             server.connections.get(i).events.add(new EventSendHeading(player.heading(p), p.uuid));

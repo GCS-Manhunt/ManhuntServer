@@ -53,14 +53,14 @@ public class PlayerSet {
     //
     // Source player
 
-    public Player[] getNClosest(UUID origin, int n){
+    public Player[] getNClosest(Player origin, int n){
         ArrayList<Player> players = new ArrayList<Player>();
         for(int i = 0; i < uuids.size(); i++){
             if(players.size() < n) {
                 players.add(getPlayer(uuids.get(i)));
             }else{
                 for(int j = 0; i < n; i++){
-                    if(getPlayer(uuids.get(i)).distance(getPlayer(origin)) > getPlayer(players.get(j).uuid).distance(getPlayer(origin))){
+                    if(getPlayer(uuids.get(i)).distance(origin) > getPlayer(players.get(j).uuid).distance(origin)){
                         players.set(j, getPlayer(uuids.get(i)));
                     }
                 }
@@ -69,15 +69,18 @@ public class PlayerSet {
         return players.toArray(new Player[players.size()]);
     }
 
-    public Player[] getRelaventPlayers(UUID origin, int max){
-        if(max < 1){
+    public Player[] getRelaventPlayers(Player origin, int max){
+        if(max < 1 || origin == null){
             return null;
         }
         ArrayList<Player> nclosest = new ArrayList<Player>(Arrays.asList(getNClosest(origin, max)));
-        double adist = nclosest.get(0).distance(getPlayer(origin));
+        if(nclosest.size() == 0){
+            return null;
+        }
+        double adist = nclosest.get(0).distance(origin);
         int i = 1;
         while (i < nclosest.size()){
-            if (nclosest.get(i).distance(getPlayer(origin)) > 1.5 * adist){
+            if (nclosest.get(i).distance(origin) > 1.5 * adist){
                 nclosest.remove(i);
             }
         }

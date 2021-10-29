@@ -1,10 +1,8 @@
 package network.event;
 
 import io.netty.buffer.ByteBuf;
-import main.Main;
 import network.NetworkUtils;
-import network.ServerHandler;
-import player.Player;
+
 import java.util.UUID;
 
 
@@ -12,7 +10,6 @@ public class EventSendHeading implements INetworkEvent
 {
 
     public double heading;
-
     public UUID uuid;
 
     public EventSendHeading() {}
@@ -31,7 +28,10 @@ public class EventSendHeading implements INetworkEvent
     }
 
     @Override
-    public void read(ByteBuf b) {}
+    public void read(ByteBuf b) {
+        this.heading = b.readDouble();
+        this.uuid = UUID.fromString(NetworkUtils.readString(b));
+    }
 
     @Override
     public void execute() {}

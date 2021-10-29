@@ -4,6 +4,8 @@ import io.netty.buffer.ByteBuf;
 import main.Main;
 import player.Player;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.UUID;
 
 public class EventSendLocation extends PersonalEvent{
@@ -33,7 +35,6 @@ public class EventSendLocation extends PersonalEvent{
         this.altitude = b.readDouble();
     }
 
-    @Override
     public void execute() {
         UUID uuid = this.clientID;
         if(uuid == null){

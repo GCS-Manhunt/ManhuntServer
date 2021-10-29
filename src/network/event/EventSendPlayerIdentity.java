@@ -39,6 +39,6 @@ public class EventSendPlayerIdentity extends PersonalEvent implements IServerThr
     @Override
     public void execute(ServerHandler s)
     {
-        s.sendEventAndClose(new EventKick("You are in! " + username));
+
     }
 }

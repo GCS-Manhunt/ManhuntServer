@@ -1,5 +1,6 @@
 package player;
 
+import java.util.Arrays;
 import java.util.UUID;
 import static java.lang.Math.*;
 
@@ -40,12 +41,16 @@ public class Player {
     */
 
     public double distance(Player p){
+        if(p == null || this.location == null || p.location == null){
+            System.out.println("Distance Err!");
+            return -3.1415926535;
+        }
         double deltalat = p.getLocation()[0] - this.location[0];
         double deltalon = p.getLocation()[1] - this.location[1];
         double a = pow(sin(deltalat/2),2) + (cos(this.location[0]) * cos(p.getLocation()[0]) * pow(sin(deltalon/2),2));
         double c = 2 * atan2(sqrt(a), sqrt(1-a));
         double d = 6371000 * c;
-        return d + abs(this.location[2] - p.location[3]);
+        return d + abs(this.location[2] - p.location[2]);
     }
 
     /*
@@ -56,11 +61,13 @@ public class Player {
      */
 
     public double heading(Player p){
-        double x = (cos(this.location[0]) * sin(p.getLocation()[0])) -
-                (sin(this.location[0]) * cos(p.getLocation()[0]) * cos(p.getLocation()[1]-p.location[0]));
-        double y = sin(p.getLocation()[1]-this.location[1]) * cos(p.getLocation()[0]);
-        double h = toDegrees(atan2(y, x));
-        return h;
+        double lat1 = this.location[0];
+        double lat2 = p.location[0];
+        double lon1 = this.location[1];
+        double lon2 = p.location[1];
+        return toDegrees(Math.atan2(Math.cos(lat1)*Math.sin(lat2)-Math.sin(lat1)*Math.cos(lat2)*Math.cos(lon2-lon1),
+                Math.sin(lon2-lon1)*Math.cos(lat2)) );
+
     }
 
     public double heading(double lat, double lon){

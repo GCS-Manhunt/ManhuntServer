@@ -53,12 +53,20 @@ public class EventSendClientDetails extends PersonalEvent implements IServerThre
 	@Override
 	public void execute(ServerHandler s)
 	{
+		synchronized (Main.server.connections){
+			Main.server.connections.add(s);
+		}
+		s.clientID = this.clientID;
 		if (Main.engine.quarantined.getPlayer(this.clientID) != null){
 			//check if the used to be connected
 			s.player = Main.engine.quarantined.getPlayer(this.clientID);
 		}else{
 			//if he the player has never connected before.
 			s.player = new Player(this.clientID, this.username);
+		}
+
+		if(Main.engine.seekers.uuids.size() == 0){
+			s.player.seeker = true;
 		}
 
 		synchronized (Main.playersAddQueue){

@@ -37,6 +37,9 @@ public class Main {
         NetworkEventMap.register(EventKick.class);
         NetworkEventMap.register(EventAcceptConnection.class);
         NetworkEventMap.register(EventSendPlayerIdentity.class);
+        NetworkEventMap.register(EventSendLocation.class);
+        NetworkEventMap.register(EventSendHeading.class);
+
 
 
 

@@ -60,6 +60,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter
 	@Override
 	public void channelInactive(ChannelHandlerContext ctx)
 	{
+		this.player.status = false;
 		ReferenceCountUtil.release(this.reader.queue);
 		server.connections.remove(this);
 	}

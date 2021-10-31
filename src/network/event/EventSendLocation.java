@@ -40,17 +40,19 @@ public class EventSendLocation extends PersonalEvent{
         if(uuid == null){
             return;
         }
-        Player player = Main.engine.hiders.getPlayer(uuid);
-        if(player == null) {
-            player = Main.engine.seekers.getPlayer(uuid);
+        synchronized (Main.engine) {
+            Player player = Main.engine.hiders.getPlayer(uuid);
+            if (player == null) {
+                player = Main.engine.seekers.getPlayer(uuid);
+            }
+            if (player == null) {
+                return;
+            }
+            double[] location_double = new double[3];
+            location_double[0] = this.latitude;
+            location_double[1] = this.longitude;
+            location_double[2] = this.altitude;
+            player.setLocation(location_double);
         }
-        if(player == null) {
-            return;
-        }
-        double[] location_double = new double[3];
-        location_double[0] = this.longitude;
-        location_double[1] = this.latitude;
-        location_double[2] = this.altitude;
-        player.setLocation(location_double);
     }
 }

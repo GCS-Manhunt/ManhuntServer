@@ -2,11 +2,11 @@ package player;
 
 import java.util.Arrays;
 import java.util.UUID;
-import static java.lang.Math.*;
+import static java.lang.Math;
 
 public class Player {
     public final UUID uuid;
-    private double[] location;
+    public double[] location;
     public final String uname;
     public boolean seeker;
     public boolean status;
@@ -40,18 +40,32 @@ public class Player {
     *  Syntax: player.distance(player2)
     */
 
-    public double distance(Player p){
-        if(p == null || this.location == null || p.location == null){
-            System.out.println("Distance Err!");
-            return -3.1415926535;
-        }
-        double deltalat = p.getLocation()[0] - this.location[0];
-        double deltalon = p.getLocation()[1] - this.location[1];
-        double a = pow(sin(deltalat/2),2) + (cos(this.location[0]) * cos(p.getLocation()[0]) * pow(sin(deltalon/2),2));
-        double c = 2 * atan2(sqrt(a), sqrt(1-a));
-        double d = 6371000 * c;
-        System.out.println(d + abs(this.location[2] - p.location[2]));
-        return d + abs(this.location[2] - p.location[2]);
+    public double distance(Player p)
+    {
+
+        // The math module contains a function
+        // named toRadians which converts from
+        // degrees to radians.
+        double lon1 = this.location[1];
+        double lon2 = p.location[1];
+        double lat1 = this.location[0];
+        double lat2 = p.location[0];
+
+        // Haversine formula
+        double dlon = lon2 - lon1;
+        double dlat = lat2 - lat1;
+        double a = Math.pow(Math.sin(dlat / 2), 2)
+                + Math.cos(lat1) * Math.cos(lat2)
+                * Math.pow(Math.sin(dlon / 2),2);
+
+        double c = 2 * Math.asin(Math.sqrt(a));
+
+        // Radius of earth in kilometers. Use 3956
+        // for miles
+        double r = 6371;
+
+        // calculate the result
+        return(c * r);
     }
 
     /*
@@ -77,6 +91,13 @@ public class Player {
         double y = sin(lon-this.location[1]) * cos(lat);
         double h = toDegrees(atan2(y, x));
         return h;
+    }
+
+    public boolean equals(Object o){
+        if(!(o instanceof Player)){
+            return false;
+        }
+        return this.uuid == ((Player)o).uuid;
     }
 
 }

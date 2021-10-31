@@ -69,9 +69,10 @@ public class EventSendClientDetails extends PersonalEvent implements IServerThre
 			s.player.seeker = true;
 		}
 
-		synchronized (Main.playersAddQueue){
+		synchronized (Main.playersAddQueue) {
 			Main.playersAddQueue.add(s.player);
 		}
+
 		String[] rules = new String[] {"code", "code", "code", "and code"};
 		s.sendEvent(new EventAcceptConnection("ManHunt", "Hunt A13",
 				"Sunday 2pm", rules));

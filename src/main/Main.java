@@ -79,8 +79,8 @@ public class Main {
             executeEvents();
             sendEvents();
             sendHeadings();
-            checkInRange();
-            stillInRange();
+//            checkInRange();
+//            stillInRange();
             engine.checkDisconnect();
             engine.checkRejoin();
         }
@@ -88,8 +88,13 @@ public class Main {
 
     private static void checkInRange() {
         for (Player p1 : engine.seekers.playerList.values()) {
-            for (Player p2 : engine.seekers.playerList.values()) {
-                if (p1 != null && p2 != null && p1 != p2 && PlayerSet.inRange(p1, p2, INRANGE)) {
+            for (Player p2 : engine.hiders.playerList.values()) {
+                //System.out.println(p1.distance(p2));
+                if (p1 != null && p2 != null){
+                    PlayerSet.inRange(p1, p2, INRANGE);
+                }
+                System.out.println("P1: ");
+                if (p1 != null && p2 != null && PlayerSet.inRange(p1, p2, INRANGE)) {
                     inRange.put(p1,p2);
                     sendInRange(p1, p2);
                     break;
@@ -103,7 +108,7 @@ public class Main {
         if(inRange != null && inRange.size() > 0){
             for(Player k : inRange.keySet()){
                 Player v = inRange.get(k);
-                if (k != null && v != null && k != v &&PlayerSet.inRange(k, v, INRANGE)) {
+                if (k != null && v != null && PlayerSet.inRange(k, v, INRANGE)) {
                     sendInRange(k, v);
                     break;
                 } else {
@@ -114,7 +119,6 @@ public class Main {
     }
 
     private static void sendInRange(Player origin, Player target) {
-        System.out.println("In Range!");
         if (server == null) {
             return;
         }
@@ -186,6 +190,7 @@ public class Main {
                         return;
                     }
                     for (Player p : closest) {
+                        System.out.println(player.heading(p));
                         synchronized (server.connections.get(i).events) {
                             server.connections.get(i).events.add(new EventSendHeading(player.heading(p), p.uuid));
                         }

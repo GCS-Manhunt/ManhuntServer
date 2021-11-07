@@ -13,6 +13,7 @@ public class Engine {
     public int[] startTime;
 
     public Hashtable<Integer, UUID> codesTable = new Hashtable<Integer, UUID>();
+    //public Hashtable<UUID, Integer> UUIDCodesTable = new Hashtable<UUID, Integer>();
 
 
 
@@ -62,6 +63,7 @@ public class Engine {
                 player.code = (int)(Math.random()*1000000); //get a random 6 digit integer
                 if(codesTable.get(player.code) == null) { //check if the player code is already in the hash map
                     codesTable.put(player.code, id);
+                    //UUIDCodesTable.put(id, player.code);
                     existDuplicate = false;
                 }
             }

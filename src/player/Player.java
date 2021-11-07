@@ -12,6 +12,8 @@ public class Player {
     public boolean status;
     public int code;
 
+    public int score;
+
     public Player(UUID uuid, String uname){
         this.uuid = uuid;
         this.uname = uname;
@@ -19,6 +21,7 @@ public class Player {
         seeker = false;
         status = true;
         code = -1;
+        score = 0;
     }
 
     public String toString(){

@@ -2,7 +2,7 @@ package player;
 
 import java.util.Arrays;
 import java.util.UUID;
-import static java.lang.Math;
+import java.lang.Math;
 
 public class Player {
     public final UUID uuid;
@@ -24,12 +24,12 @@ public class Player {
     }
 
     public double[] getLocation() {
-        return new double[]{toDegrees(location[0]),toDegrees(location[1]),location[2]};
+        return new double[]{Math.toDegrees(location[0]),Math.toDegrees(location[1]),location[2]};
     }
 
     public void setLocation(double[] location) {
-        this.location[0] = toRadians(location[0]);
-        this.location[1] = toRadians(location[1]);
+        this.location[0] = Math.toRadians(location[0]);
+        this.location[1] = Math.toRadians(location[1]);
         this.location[2] = location[2];
     }
 
@@ -80,16 +80,16 @@ public class Player {
         double lat2 = p.location[0];
         double lon1 = this.location[1];
         double lon2 = p.location[1];
-        return toDegrees(Math.atan2(Math.cos(lat1)*Math.sin(lat2)-Math.sin(lat1)*Math.cos(lat2)*Math.cos(lon2-lon1),
+        return Math.toDegrees(Math.atan2(Math.cos(lat1)*Math.sin(lat2)-Math.sin(lat1)*Math.cos(lat2)*Math.cos(lon2-lon1),
                 Math.sin(lon2-lon1)*Math.cos(lat2)) );
 
     }
 
     public double heading(double lat, double lon){
-        double x = (cos(lat) * sin(lat)) -
-                (sin(lat) * cos(lat) * cos(lon-lat));
-        double y = sin(lon-this.location[1]) * cos(lat);
-        double h = toDegrees(atan2(y, x));
+        double x = (Math.cos(lat) * Math.sin(lat)) -
+                (Math.sin(lat) * Math.cos(lat) * Math.cos(lon-lat));
+        double y = Math.sin(lon-this.location[1]) * Math.cos(lat);
+        double h = Math.toDegrees(Math.atan2(y, x));
         return h;
     }
 

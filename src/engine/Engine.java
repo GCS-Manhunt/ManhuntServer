@@ -12,6 +12,8 @@ public class Engine {
     public GeoFence fence;
     public int[] startTime;
 
+    public Hashtable<Integer, UUID> codesTable = new Hashtable<Integer, UUID>();
+
 
 
     public Engine(int capacity){
@@ -46,6 +48,24 @@ public class Engine {
                 break;
             }
             i++;
+        }
+    }
+
+
+    public void initializeCodes(){
+        int size = hiders.playerList.size();
+        for(UUID id : hiders.playerList.keySet()) {
+            //get the player from the id
+            Player player = hiders.getPlayer(id);
+            boolean existDuplicate = true;
+            while(existDuplicate) {
+                player.code = (int)(Math.random()*1000000); //get a random 6 digit integer
+                if(codesTable.get(player.code) == null) { //check if the player code is already in the hash map
+                    codesTable.put(player.code, id);
+                    existDuplicate = false;
+                }
+            }
+
         }
     }
 

@@ -10,6 +10,7 @@ public class Player {
     public final String uname;
     public boolean seeker;
     public boolean status;
+    public int code;
 
     public Player(UUID uuid, String uname){
         this.uuid = uuid;
@@ -17,6 +18,7 @@ public class Player {
         this.location = new double[3];
         seeker = false;
         status = true;
+        code = -1;
     }
 
     public String toString(){

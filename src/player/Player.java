@@ -11,14 +11,19 @@ public class Player {
     public boolean seeker;
     public boolean status;
     public int code;
+    public double score;
+    public static final int CLOSE_SCORE = 3;
+    public static final int MID_SCORE = 2;
+    public static final int FAR_SCORE = 1;
 
     public Player(UUID uuid, String uname){
         this.uuid = uuid;
         this.uname = uname;
         this.location = new double[3];
-        seeker = false;
-        status = true;
-        code = -1;
+        this.seeker = false;
+        this.status = true;
+        this.code = -1;
+        this.score = 0;
     }
 
     public String toString(){
@@ -64,7 +69,7 @@ public class Player {
 
         // Radius of earth in kilometers. Use 3956
         // for miles
-        double r = 6371;
+        double r = 6371 * 1000;
 
         // calculate the result
         return(c * r);

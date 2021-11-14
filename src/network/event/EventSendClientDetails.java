@@ -67,6 +67,7 @@ public class EventSendClientDetails extends PersonalEvent implements IServerThre
 
 		if(Main.engine.seekers.uuids.size() == 0){
 			s.player.seeker = true;
+			s.sendEvent(new EventMakeSeeker());
 		}
 
 		synchronized (Main.playersAddQueue) {

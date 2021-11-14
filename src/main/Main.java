@@ -1,6 +1,7 @@
 package main;
 
 import engine.Engine;
+import logger.Logger;
 import network.NetworkEventMap;
 import network.Server;
 import network.SynchronizedList;
@@ -24,7 +25,8 @@ public class Main {
     public static Server server;
     public static final boolean RUN = true;
     public static final int NDISPLAY = 3;
-    public static final double INRANGE = 10;
+    public static final double INRANGE = 20;
+    public static Logger logger;
 
     //Initializing inRange
     public static HashMap<Player, Player> inRange;
@@ -52,6 +54,9 @@ public class Main {
         NetworkEventMap.register(EventSendHeading.class);
         NetworkEventMap.register(EventSeekerProximity.class);
         NetworkEventMap.register(EventHiderProximity.class);
+        NetworkEventMap.register(EventEnterCode.class);
+        NetworkEventMap.register(EventMakeSeeker.class);
+        NetworkEventMap.register(EventSendScore.class);
 
         //Print IP before init
         InetAddress ip;
@@ -74,13 +79,18 @@ public class Main {
             }
         }.start();
 
+        //Logger
+        logger = new Logger();
+        logger.setInterval(1000);
+
         while (RUN) {
+            logger.printlog();
             syncQueues();
             executeEvents();
             sendEvents();
             sendHeadings();
-//            checkInRange();
-//            stillInRange();
+            checkInRange();
+            stillInRange();
             engine.checkDisconnect();
             engine.checkRejoin();
         }
@@ -89,11 +99,9 @@ public class Main {
     private static void checkInRange() {
         for (Player p1 : engine.seekers.playerList.values()) {
             for (Player p2 : engine.hiders.playerList.values()) {
-                //System.out.println(p1.distance(p2));
                 if (p1 != null && p2 != null){
                     PlayerSet.inRange(p1, p2, INRANGE);
                 }
-                System.out.println("P1: ");
                 if (p1 != null && p2 != null && PlayerSet.inRange(p1, p2, INRANGE)) {
                     inRange.put(p1,p2);
                     sendInRange(p1, p2);
@@ -124,11 +132,11 @@ public class Main {
         }
         synchronized (server.connections) {
             for (int i = 0; i < server.connections.size(); i++) {
-                if(server.connections.get(i).clientID == origin.uuid){
+                if(server.connections.get(i).clientID.equals(origin.uuid)){
                     synchronized (server.connections.get(i).events) {
                         server.connections.get(i).events.add(new EventSeekerProximity(target.uname, target.uuid, true));
                     }
-                }else if (server.connections.get(i).clientID == target.uuid){
+                }else if (server.connections.get(i).clientID.equals(target.uuid)){
                     synchronized (server.connections.get(i).events) {
                         server.connections.get(i).events.add(new EventHiderProximity(origin.uuid, true));
                     }
@@ -143,11 +151,11 @@ public class Main {
         }
         synchronized (server.connections) {
             for (int i = 0; i < server.connections.size(); i++) {
-                if(server.connections.get(i).clientID == origin.uuid){
+                if(server.connections.get(i).clientID.equals(origin.uuid)){
                     synchronized (server.connections.get(i).events) {
                         server.connections.get(i).events.add(new EventSeekerProximity(target.uname, target.uuid, false));
                     }
-                }else if (server.connections.get(i).clientID == target.uuid){
+                }else if (server.connections.get(i).clientID.equals(target.uuid)){
                     synchronized (server.connections.get(i).events) {
                         server.connections.get(i).events.add(new EventHiderProximity(origin.uuid, false));
                     }
@@ -190,7 +198,6 @@ public class Main {
                         return;
                     }
                     for (Player p : closest) {
-                        System.out.println(player.heading(p));
                         synchronized (server.connections.get(i).events) {
                             server.connections.get(i).events.add(new EventSendHeading(player.heading(p), p.uuid));
                         }
@@ -208,6 +215,36 @@ public class Main {
         synchronized (playersDelQueue){
             if(playersDelQueue.size() > 0)
                 engine.kickPlayer(playersDelQueue.remove(0).uuid);
+        }
+    }
+
+    public void hiderScore(){
+        /*
+        hider score updates;
+         */
+        int addScore = 0; //the score add for each player.
+
+        for (Player p1 : engine.hiders.playerList.values()) {
+
+            addScore = 0; //reset for each new hider;
+            for (Player p2 : engine.seekers.playerList.values()) {
+                //System.out.println(p1.distance(p2));
+                if (p1 != null && p2 != null){
+                    System.out.println("From Engine hiderScore: got both p1 and p2 null");
+                }
+                /*
+                different score for different range;
+                 */
+                else if (engine.hiders.inRange(p1, p2, 20)){
+                    //if hiders is close to any
+                    addScore = 10;
+                }else if(engine.hiders.inRange(p1, p2, 100)){
+                    addScore = 3;
+                }else if(engine.hiders.inRange(p1, p2, 200)){
+                    addScore = 1;
+                }
+            }
+            p1.score += addScore;
         }
     }
 

@@ -96,4 +96,35 @@ public class Engine {
             }
         }
     }
+
+    //update hider score base on their proximity situation with hiders
+    public void hiderScore(){
+        /*
+        hider score updates;
+         */
+        int addScore = 0; //the score add for each player.
+
+        for (Player p1 : hiders.playerList.values()) {
+
+            addScore = 0; //reset for each new hider;
+            for (Player p2 : seekers.playerList.values()) {
+                //System.out.println(p1.distance(p2));
+                if (p1 != null && p2 != null){
+                    System.out.println("From Engine hiderScore: got both p1 and p2 null");
+                }
+                /*
+                different score for different range;
+                 */
+                else if (hiders.inRange(p1, p2, 20)){
+                    //if hiders is close to any
+                    addScore = 10;
+                }else if(hiders.inRange(p1, p2, 100)){
+                    addScore = 3;
+                }else if(hiders.inRange(p1, p2, 200)){
+                    addScore = 1;
+                }
+            }
+            p1.score += addScore;
+        }
+    }
 }

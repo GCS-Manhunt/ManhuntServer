@@ -10,6 +10,7 @@ public class Player {
     public final String uname;
     public boolean seeker;
     public boolean status;
+    public int score;
 
     public Player(UUID uuid, String uname){
         this.uuid = uuid;

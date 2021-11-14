@@ -10,7 +10,7 @@ public class EventSendScore extends PersonalEvent{
     int playerScore;
     int playerRanking;
     int scoreAhead;
-    int scoreingRate;
+    int scoringRate;
     //1 should be range from 100m-200m;
     //2 should be range from 20-100;
     //3 should be <20m, which is crazy close
@@ -26,7 +26,7 @@ public class EventSendScore extends PersonalEvent{
         this.playerScore = playerScore;
         this.playerRanking = playerRanking;
         this.scoreAhead = scoreAhead;
-        this.scoreingRate = scoringRate;
+        this.scoringRate = scoringRate;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class EventSendScore extends PersonalEvent{
         b.writeInt(this.playerScore);
         b.writeInt(this.playerRanking);
         b.writeInt(this.scoreAhead);
-        b.writeInt(this.scoreingRate);
+        b.writeInt(this.scoringRate);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class EventSendScore extends PersonalEvent{
         this.playerScore = b.readInt();
         this.playerRanking = b.readInt();
         this.scoreAhead = b.readInt();
-        this.scoreingRate = b.readInt();
+        this.scoringRate = b.readInt();
     }
 
     @Override

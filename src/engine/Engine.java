@@ -12,6 +12,9 @@ public class Engine {
     public GeoFence fence;
     public long startTime;
 
+    public int gameDuration; //unit: minute
+    private int baseScore = 20; //this the score seeker get for find first person.
+
     public Hashtable<Integer, UUID> codesTable = new Hashtable<Integer, UUID>();
 
 
@@ -106,4 +109,25 @@ public class Engine {
             }
         }
     }
+
+    public void seekerScore(UUID uuid) {
+
+        Player p = seekers.getPlayer((uuid));
+
+        if (p == null) {
+            return;
+        }
+
+        p.score += baseScore + getParameter() * (hiders.uuids.size() - 1);
+        //-1 for minus the player himself, leving amount of players are found.
+    }
+
+    public double getParameter() {
+        int totalPlayer = hiders.uuids.size() + seekers.uuids.size();
+        return (3 * gameDuration - baseScore) / (totalPlayer * totalPlayer);
+    }
+
 }
+
+
+

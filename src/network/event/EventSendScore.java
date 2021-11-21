@@ -22,11 +22,10 @@ public class EventSendScore extends PersonalEvent{
     public EventSendScore() {
 
     }
-    public EventSendScore(int playerScore , int playerRanking, int scoreAhead, int scoringRate) {
+    public EventSendScore(int playerScore , int playerRanking, int scoreAhead) {
         this.playerScore = playerScore;
         this.playerRanking = playerRanking;
         this.scoreAhead = scoreAhead;
-        this.scoreingRate = scoringRate;
     }
 
     @Override
@@ -35,7 +34,6 @@ public class EventSendScore extends PersonalEvent{
         b.writeInt(this.playerScore);
         b.writeInt(this.playerRanking);
         b.writeInt(this.scoreAhead);
-        b.writeInt(this.scoreingRate);
     }
 
     @Override
@@ -43,7 +41,6 @@ public class EventSendScore extends PersonalEvent{
         this.playerScore = b.readInt();
         this.playerRanking = b.readInt();
         this.scoreAhead = b.readInt();
-        this.scoreingRate = b.readInt();
     }
 
     @Override

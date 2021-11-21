@@ -10,7 +10,7 @@ public class Engine {
     public PlayerSet seekers;
     public PlayerSet quarantined;
     public GeoFence fence;
-    public int[] startTime;
+    public long startTime;
 
     public Hashtable<Integer, UUID> codesTable = new Hashtable<Integer, UUID>();
 
@@ -20,7 +20,7 @@ public class Engine {
         hiders = new PlayerSet(capacity);
         seekers = new PlayerSet(capacity);
         quarantined = new PlayerSet(capacity);
-        startTime = new int[] {0, 0};
+        startTime = System.currentTimeMillis();
     }
 
     public void addPlayer(Player p){
@@ -51,21 +51,24 @@ public class Engine {
         }
     }
 
-
-    public void initializeCodes(){
-        int size = hiders.playerList.size();
-        for(UUID id : hiders.playerList.keySet()) {
-            //get the player from the id
-            Player player = hiders.getPlayer(id);
-            boolean existDuplicate = true;
-            while(existDuplicate) {
-                player.code = (int)(Math.random()*1000000); //get a random 6 digit integer
-                if(codesTable.get(player.code) == null) { //check if the player code is already in the hash map
-                    codesTable.put(player.code, id);
-                    existDuplicate = false;
+    //update hider score base on their proximity situation with hiders
+    public void hiderScore(){
+        for (Player p1 : hiders.playerList.values()) {
+            int addScore = 0; //reset for each new hider;
+            for (Player p2 : seekers.playerList.values()) {
+                if (!(p1 != null && p2 != null)){
+                    return;
+                }
+                else if (hiders.inRange(p1, p2, 20)){
+                    //if hiders is close to any
+                    addScore = 10;
+                }else if(hiders.inRange(p1, p2, 100)){
+                    addScore = 2;
+                }else if(hiders.inRange(p1, p2, 200)){
+                    addScore = 1;
                 }
             }
-
+            p1.score += addScore;
         }
     }
 
@@ -76,19 +79,6 @@ public class Engine {
             return hiders.removePlayer(uuid);
         }
         return p;
-    }
-
-    public void inFence(){
-        for(UUID uuid : seekers.uuids){
-            if(!fence.in(seekers.getPlayer(uuid))){
-                quarantined.addPlayer(seekers.removePlayer(uuid));
-            }
-        }
-        for(UUID uuid : hiders.uuids){
-            if(!fence.in(hiders.getPlayer(uuid))){
-                quarantined.addPlayer(hiders.removePlayer(uuid));
-            }
-        }
     }
 
     public void checkDisconnect(){

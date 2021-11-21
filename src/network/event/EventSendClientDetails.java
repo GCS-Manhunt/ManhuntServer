@@ -61,22 +61,30 @@ public class EventSendClientDetails extends PersonalEvent implements IServerThre
 			//check if the used to be connected
 			s.player = Main.engine.quarantined.getPlayer(this.clientID);
 		}else{
-			//if he the player has never connected before.
+			//if the player has never connected before.
 			s.player = new Player(this.clientID, this.username);
 		}
 
-		if(Main.engine.seekers.uuids.size() == 0){
-			s.player.seeker = true;
-			s.sendEvent(new EventMakeSeeker());
+		String[] rules = new String[] {"code", "code", "code", "and code"};
+		int code = (int)(Math.random()*1000000);
+		while(Main.engine.codesTable.get(code) != null){
+			code = (int)(Math.random()*1000000);
 		}
+		s.player.code = code;
+		Main.engine.codesTable.put(code, this.clientID);
 
+		s.sendEvent(new EventAcceptConnection("ManHunt", "Hunt A13",
+				"Sunday 2pm", rules, code));
+		System.out.println(s.player.toString() + " just joined!");
+		synchronized (Main.engine){
+			if(Main.engine.seekers.uuids.size() == 0){
+				s.player.seeker = true;
+				s.sendEvent(new EventMakeSeeker());
+			}
+			System.out.println(Main.engine.seekers.uuids.size());
+		}
 		synchronized (Main.playersAddQueue) {
 			Main.playersAddQueue.add(s.player);
 		}
-
-		String[] rules = new String[] {"code", "code", "code", "and code"};
-		s.sendEvent(new EventAcceptConnection("ManHunt", "Hunt A13",
-				"Sunday 2pm", rules));
-		System.out.println(s.player.toString() + " just joined!");
 	}
 }

@@ -9,18 +9,20 @@ public class EventAcceptConnection extends PersonalEvent
     public String location;
     public String time;
     public String[] rules;
+    public int code;
 
     public EventAcceptConnection()
     {
 
     }
 
-    public EventAcceptConnection(String gameName, String location, String time, String[] rules)
+    public EventAcceptConnection(String gameName, String location, String time, String[] rules, int code)
     {
         this.gameName = gameName;
         this.location = location;
         this.time = time;
         this.rules = rules;
+        this.code = code;
     }
 
     @Override
@@ -33,6 +35,7 @@ public class EventAcceptConnection extends PersonalEvent
 
         for (String s: rules)
             NetworkUtils.writeString(b, s);
+        b.writeInt(code);
     }
 
     @Override
@@ -47,6 +50,7 @@ public class EventAcceptConnection extends PersonalEvent
         {
             rules[i] = NetworkUtils.readString(b);
         }
+        this.code = b.readInt();
     }
 
     @Override

@@ -22,7 +22,7 @@ public class EventCodeConfirmation extends PersonalEvent{
 
     @Override
     public void read(ByteBuf b) {
-        NetworkUtils.writeString(b, this.confirmationString);
+        this.confirmationString = NetworkUtils.readString(b);
     }
 
     @Override

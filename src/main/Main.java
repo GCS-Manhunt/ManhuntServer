@@ -4,15 +4,12 @@ import engine.Engine;
 import logger.Logger;
 import network.NetworkEventMap;
 import network.Server;
-import network.SynchronizedList;
 import network.event.*;
 import player.Player;
 import player.PlayerSet;
 
-import javax.swing.plaf.synth.SynthTextAreaUI;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.sql.Array;
 import java.util.*;
 
 import static network.Server.eventsIn;
@@ -57,6 +54,7 @@ public class Main {
         NetworkEventMap.register(EventEnterCode.class);
         NetworkEventMap.register(EventMakeSeeker.class);
         NetworkEventMap.register(EventSendScore.class);
+        NetworkEventMap.register(EventCodeConfirmation.class);
 
         //Print IP before init
         InetAddress ip;
@@ -84,6 +82,10 @@ public class Main {
         logger.setInterval(1000);
 
         while (RUN) {
+            long now = System.currentTimeMillis();
+            if(now-engine.startTime % 1000 == 0){
+                score();
+            }
             logger.printlog();
             syncQueues();
             executeEvents();
@@ -110,6 +112,11 @@ public class Main {
 
             }
         }
+    }
+
+    public static void score(){
+        engine.hiderScore();
+//        engine.seekerScore();
     }
 
     public static void stillInRange(){

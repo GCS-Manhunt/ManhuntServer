@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import main.Main;
 import network.ServerHandler;
 
+import java.sql.SQLOutput;
 import java.util.UUID;
 
 public class EventEnterCode extends PersonalEvent{
@@ -29,27 +30,43 @@ public class EventEnterCode extends PersonalEvent{
 
     @Override
     public void execute() {
-        UUID uuid_seeker = this.clientID;
-        UUID uuid_hider = Main.engine.codesTable.get(this.code);
-        if(uuid_hider == null) {
-            //send confirmation event
-            for(int i = 0; i < Main.server.connections.size(); i++) {
-                if(Main.server.connections.get(i).clientID == uuid_seeker){
-                    Main.server.connections.get(i).events.add(new EventCodeConfirmation(""));
+        synchronized (Main.engine) {
+            UUID uuid_seeker = this.clientID;
+            UUID uuid_hider = Main.engine.codesTable.get(this.code);
+            if (uuid_hider == null) {
+                //send confirmation event
+                for (int i = 0; i < Main.server.connections.size(); i++) {
+                    if (Main.server.connections.get(i).clientID.equals(uuid_seeker)) {
+                        Main.server.connections.get(i).events.add(new EventCodeConfirmation("No Player Found!"));
+                    }
+                }
+                return;
+            } else {
+                //send confirmation event
+                for (int i = 0; i < Main.server.connections.size(); i++) {
+                    if (Main.server.connections.get(i).clientID.equals(uuid_seeker)) {
+                        try{
+                            Main.server.connections.get(i).events.add(new EventCodeConfirmation(Main.engine.hiders.getPlayer(uuid_hider).uname));
+                            System.out.println(Main.engine.hiders.getPlayer(uuid_hider).uname + " was found by " + Main.server.connections.get(i).player.uname);
+                        }catch(NullPointerException e){
+                            Main.server.connections.get(i).events.add(new EventCodeConfirmation("No Player Found!"));
+                        }
+                    }
+                }
+                //change score
+                Main.engine.seekers.getPlayer(uuid_seeker).score += 1; //Make an algorithm for this
+
+                //Make Seeker
+                try {
+                    Main.engine.makeSeeker(uuid_hider);
+                    for (int i = 0; i < Main.server.connections.size(); i++) {
+                        if (Main.server.connections.get(i).clientID.equals(uuid_hider)) {
+                            Main.server.connections.get(i).events.add(new EventMakeSeeker());
+                        }
+                    }
+                } catch(NullPointerException e){
                 }
             }
-            return;
-        } else {
-            //convert to seeker
-            Main.engine.makeSeeker(uuid_hider);
-            //send confirmation event
-            for(int i = 0; i < Main.server.connections.size(); i++) {
-                if(Main.server.connections.get(i).clientID == uuid_seeker){
-                    Main.server.connections.get(i).events.add(new EventCodeConfirmation(Main.engine.hiders.getPlayer(uuid_hider).uname));
-                }
-            }
-            //change score
-            Main.engine.seekers.getPlayer(uuid_seeker).score += 1; //Make an algorithm for this
         }
     }
 }

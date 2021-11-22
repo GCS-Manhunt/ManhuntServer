@@ -46,16 +46,15 @@ public class EventEnterCode extends PersonalEvent{
                 for (int i = 0; i < Main.server.connections.size(); i++) {
                     if (Main.server.connections.get(i).clientID.equals(uuid_seeker)) {
                         try{
-                            Main.server.connections.get(i).events.add(new EventCodeConfirmation(Main.engine.hiders.getPlayer(uuid_hider).uname));
+                            Main.server.connections.get(i).events.add(new EventCodeConfirmation("Found "+Main.engine.hiders.getPlayer(uuid_hider).uname));
                             System.out.println(Main.engine.hiders.getPlayer(uuid_hider).uname + " was found by " + Main.server.connections.get(i).player.uname);
+                            double x = ((double) Main.engine.hiders.uuids.size()) / (Main.engine.seekers.uuids.size() + Main.engine.hiders.uuids.size());
+                            Main.engine.seekers.getPlayer(uuid_seeker).score += 75*x*x + 25; //Make an algorithm for this
                         }catch(NullPointerException e){
                             Main.server.connections.get(i).events.add(new EventCodeConfirmation("No Player Found!"));
                         }
                     }
                 }
-                //change score
-                Main.engine.seekers.getPlayer(uuid_seeker).score += 1; //Make an algorithm for this
-
                 //Make Seeker
                 try {
                     Main.engine.makeSeeker(uuid_hider);
@@ -67,6 +66,7 @@ public class EventEnterCode extends PersonalEvent{
                 } catch(NullPointerException e){
                 }
             }
+            Main.inRange.clear();
         }
     }
 }

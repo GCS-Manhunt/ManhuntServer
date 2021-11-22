@@ -10,7 +10,6 @@ public class EventSendScore extends PersonalEvent{
     int playerScore;
     int playerRanking;
     int scoreAhead;
-    int scoreingRate;
     //1 should be range from 100m-200m;
     //2 should be range from 20-100;
     //3 should be <20m, which is crazy close

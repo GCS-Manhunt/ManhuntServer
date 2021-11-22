@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.UUID;
 import java.lang.Math;
 
-public class Player {
+public class Player implements Comparable<Player>{
     public final UUID uuid;
     public double[] location;
     public final String uname;
@@ -107,4 +107,8 @@ public class Player {
         return this.uuid == ((Player)o).uuid;
     }
 
+    @Override
+    public int compareTo(Player p) {
+        return (int)(this.score - p.score);
+    }
 }

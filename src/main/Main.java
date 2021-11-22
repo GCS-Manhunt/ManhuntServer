@@ -46,7 +46,6 @@ public class Main {
         NetworkEventMap.register(EventSendClientDetails.class);
         NetworkEventMap.register(EventKick.class);
         NetworkEventMap.register(EventAcceptConnection.class);
-        NetworkEventMap.register(EventSendPlayerIdentity.class);
         NetworkEventMap.register(EventSendLocation.class);
         NetworkEventMap.register(EventSendHeading.class);
         NetworkEventMap.register(EventSeekerProximity.class);
@@ -79,20 +78,22 @@ public class Main {
 
         //Logger
         logger = new Logger();
-        logger.setInterval(1000);
-
+        logger.setInterval(3000);
+        long last = 0;
         while (RUN) {
-            long now = System.currentTimeMillis();
-            if(now-engine.startTime % 1000 == 0){
-                score();
+            long now = System.currentTimeMillis()/1000;
+            if(last < now){
+                last = now;
+                engine.hiderScore();
+                sendHeadings();
+                rank();
+                checkInRange();
+                stillInRange();
             }
             logger.printlog();
             syncQueues();
             executeEvents();
             sendEvents();
-            sendHeadings();
-            checkInRange();
-            stillInRange();
             engine.checkDisconnect();
             engine.checkRejoin();
         }
@@ -101,9 +102,6 @@ public class Main {
     private static void checkInRange() {
         for (Player p1 : engine.seekers.playerList.values()) {
             for (Player p2 : engine.hiders.playerList.values()) {
-                if (p1 != null && p2 != null){
-                    PlayerSet.inRange(p1, p2, INRANGE);
-                }
                 if (p1 != null && p2 != null && PlayerSet.inRange(p1, p2, INRANGE)) {
                     inRange.put(p1,p2);
                     sendInRange(p1, p2);
@@ -114,9 +112,38 @@ public class Main {
         }
     }
 
-    public static void score(){
-        engine.hiderScore();
-//        engine.seekerScore();
+    public static void rank(){
+        String[][] rankings = engine.ranking();
+        if(rankings.length >= 1) {
+            synchronized (server.connections) {
+                for (int j = 0; j < server.connections.size(); j++) {
+                    if(server.connections.get(j).clientID.equals(UUID.fromString(rankings[0][0]))){
+                        synchronized (server.connections.get(j).events) {
+                            server.connections.get(j).events.add(new EventSendScore((int)(Double.parseDouble(rankings[0][1])), 1, 0));
+                        }
+                    }
+                }
+            }
+            int rank = 1;
+            double dist = 0;
+            for (int i = 1; i < rankings.length; i++) {
+                if(Double.parseDouble(rankings[i][1]) == Double.parseDouble(rankings[i-1][1])){
+
+                }else{
+                    rank = i+1;
+                    dist = Double.parseDouble(rankings[i-1][1]) - Double.parseDouble(rankings[i][1]);
+                    synchronized (server.connections) {
+                        for (int j = 0; j < server.connections.size(); j++) {
+                            if (server.connections.get(j).clientID.equals(UUID.fromString(rankings[i][0]))) {
+                                synchronized (server.connections.get(j).events) {
+                                    server.connections.get(j).events.add(new EventSendScore((int)(Double.parseDouble(rankings[i][1])), rank, (int)dist));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public static void stillInRange(){

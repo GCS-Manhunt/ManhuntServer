@@ -65,7 +65,7 @@ public class EventSendClientDetails extends PersonalEvent implements IServerThre
 			s.player = new Player(this.clientID, this.username);
 		}
 
-		String[] rules = new String[] {"code", "code", "code", "and code"};
+		String[] rules = new String[] {"No leaving Hunt Library", "Games will last 1 hour", "Try entering in people's codes", "This game is optimized for 100+ people"};
 		int code = (int)(Math.random()*1000000);
 		while(Main.engine.codesTable.get(code) != null){
 			code = (int)(Math.random()*1000000);
@@ -73,8 +73,8 @@ public class EventSendClientDetails extends PersonalEvent implements IServerThre
 		s.player.code = code;
 		Main.engine.codesTable.put(code, this.clientID);
 
-		s.sendEvent(new EventAcceptConnection("ManHunt", "Hunt A13",
-				"Sunday 2pm", rules, code));
+		s.sendEvent(new EventAcceptConnection("ManHunt", "Hunt Studio A",
+				"Sunday 7:00pm", rules, code));
 		System.out.println(s.player.toString() + " just joined!");
 		synchronized (Main.engine){
 			if(Main.engine.seekers.uuids.size() == 0){

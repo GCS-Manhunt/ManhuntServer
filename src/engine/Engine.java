@@ -15,8 +15,6 @@ public class Engine {
 
     public Hashtable<Integer, UUID> codesTable = new Hashtable<Integer, UUID>();
 
-
-
     public Engine(int capacity){
         hiders = new PlayerSet(capacity);
         seekers = new PlayerSet(capacity);
@@ -148,19 +146,6 @@ public class Engine {
         for(UUID uuid : hiders.uuids){
             if(!hiders.getPlayer(uuid).status){
                 quarantined.addPlayer(hiders.removePlayer(uuid));
-            }
-        }
-    }
-
-    public void checkRejoin(){
-        for(UUID uuid : quarantined.uuids){
-            if(fence.in(quarantined.getPlayer(uuid))){
-                Player p = quarantined.removePlayer(uuid);
-                if(p.seeker && p.status){
-                    seekers.addPlayer(p);
-                }else if(p.status){
-                    hiders.addPlayer(p);
-                }
             }
         }
     }

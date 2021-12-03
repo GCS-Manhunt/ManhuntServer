@@ -17,7 +17,7 @@ public class PlayerSet {
         if(uuids.size() != playerList.size()){
             cleanPlayers();
         }
-        if (playerList.size() < capacity) {
+        if (playerList.size() < capacity && p instanceof Player){
             playerList.put(p.uuid, p);
             uuids.add(p.uuid);
             return true;

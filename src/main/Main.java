@@ -95,7 +95,6 @@ public class Main {
             executeEvents();
             sendEvents();
             engine.checkDisconnect();
-            engine.checkRejoin();
         }
     }
 

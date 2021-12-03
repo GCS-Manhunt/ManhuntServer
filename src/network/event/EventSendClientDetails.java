@@ -59,9 +59,11 @@ public class EventSendClientDetails extends PersonalEvent implements IServerThre
 		s.clientID = this.clientID;
 		if (Main.engine.quarantined.getPlayer(this.clientID) != null){
 			//check if the used to be connected
+			System.out.println("Found Player" + Main.engine.quarantined.getPlayer(this.clientID));
 			s.player = Main.engine.quarantined.getPlayer(this.clientID);
 		}else{
 			//if the player has never connected before.
+			System.out.println(Main.engine.quarantined.playerList.toString());
 			s.player = new Player(this.clientID, this.username);
 		}
 

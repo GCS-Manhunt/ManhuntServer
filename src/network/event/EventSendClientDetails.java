@@ -51,32 +51,36 @@ public class EventSendClientDetails extends PersonalEvent implements IServerThre
 	}
 
 	@Override
-	public void execute(ServerHandler s)
-	{
-		synchronized (Main.server.connections){
+	public void execute(ServerHandler s) {
+		synchronized (Main.server.connections) {
 			Main.server.connections.add(s);
 		}
 		s.clientID = this.clientID;
-		if (Main.engine.quarantined.getPlayer(this.clientID) != null){
+		if (Main.engine.quarantined.getPlayer(this.clientID) != null) {
 			//check if the used to be connected
 			System.out.println("Found Player" + Main.engine.quarantined.getPlayer(this.clientID));
 			s.player = Main.engine.quarantined.getPlayer(this.clientID);
-		}else{
+		} else {
 			//if the player has never connected before.
 			System.out.println(Main.engine.quarantined.playerList.toString());
 			s.player = new Player(this.clientID, this.username);
 		}
 
-		String[] rules = new String[] {"No leaving Hunt Library", "Games will last 1 hour", "Try entering in people's codes", "This game is optimized for 100+ people"};
-		int code = (int)(Math.random()*1000000);
-		while(Main.engine.codesTable.get(code) != null){
-			code = (int)(Math.random()*1000000);
+		String[] rules = new String[]{"No leaving Hunt Library", "Games will last 1 hour", "Try entering in people's codes", "This game is optimized for 100+ people"};
+		int code = (int) (Math.random() * 1000000);
+		while (Main.engine.codesTable.get(code) != null) {
+			code = (int) (Math.random() * 1000000);
 		}
-		s.player.code = code;
-		Main.engine.codesTable.put(code, this.clientID);
+		if (s.player.code == -1){
+			s.player.code = code;
+			Main.engine.codesTable.put(code, this.clientID);
+		}else{
+			code = s.player.code;
+		}
 
 		s.sendEvent(new EventAcceptConnection("ManHunt", "Hunt Studio A",
 				"Sunday 7:00pm", rules, code));
+		if(s.player.seeker) s.sendEvent(new EventMakeSeeker());
 		System.out.println(s.player.toString() + " just joined!");
 		synchronized (Main.engine){
 			if(Main.engine.seekers.uuids.size() == 0){

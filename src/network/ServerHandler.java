@@ -60,13 +60,15 @@ public class ServerHandler extends ChannelInboundHandlerAdapter
 	@Override
 	public void channelInactive(ChannelHandlerContext ctx)
 	{
-		synchronized (Main.engine){
-			if(Main.engine.hiders.getPlayer(this.clientID) != null){
-				System.out.println(Main.engine.hiders.getPlayer(this.clientID) + " was quarantined.");
-				Main.engine.quarantined.addPlayer(Main.engine.hiders.removePlayer(this.clientID));
-			}else if(Main.engine.seekers.getPlayer(this.clientID) != null){
-				System.out.println(Main.engine.seekers.getPlayer(this.clientID) + " was quarantined.");
-				Main.engine.quarantined.addPlayer(Main.engine.seekers.removePlayer(this.clientID));
+		synchronized (Main.server.connections) {
+			synchronized (Main.engine) {
+				if (Main.engine.hiders.getPlayer(this.clientID) != null) {
+					System.out.println(Main.engine.hiders.getPlayer(this.clientID) + " was quarantined.");
+					Main.engine.quarantined.addPlayer(Main.engine.hiders.removePlayer(this.clientID));
+				} else if (Main.engine.seekers.getPlayer(this.clientID) != null) {
+					System.out.println(Main.engine.seekers.getPlayer(this.clientID) + " was quarantined.");
+					Main.engine.quarantined.addPlayer(Main.engine.seekers.removePlayer(this.clientID));
+				}
 			}
 		}
 		ReferenceCountUtil.release(this.reader.queue);

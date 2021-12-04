@@ -66,7 +66,7 @@ public class Main {
                 update ++;
             }
         }
-        System.out.println("\rSoftware up to Date!\t\t\t\t\t");
+        System.out.println("\nSoftware up to Date!");
 
         //Initialize Queues
         playersAddQueue = new ArrayList<Player>();
@@ -141,7 +141,7 @@ public class Main {
                 update ++;
             }
         }
-        System.out.println("\rMain Thread Engaged!\t\t\t\t\t");
+        System.out.println("\nMain Thread Engaged!");
         while (RUN) {
             long now = System.currentTimeMillis()/1000;
             if(last < now){

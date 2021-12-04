@@ -29,6 +29,45 @@ public class Main {
     public static HashMap<Player, Player> inRange;
 
     public static void main(String[] args) {
+
+        //System I
+        new Thread() {
+            @Override
+            public void run() {
+                while(true){
+                    Scanner s = new Scanner(System.in);
+                    if(s.nextLine().equals("exit")) {
+                        killServer();
+                    }
+                }
+            }
+        }.start();
+
+        //'Checking Inet for Updates'
+        System.out.println("Checking For Updates...");
+        long ustart = System.currentTimeMillis();
+        long dstart = System.currentTimeMillis();
+        int update = 0;
+        while(update < 101){
+            if((System.currentTimeMillis() - dstart)/250 > 1) {
+                System.out.print("\r[");
+                for (int i = 0; i < update; i++) {
+                    System.out.print("=");
+                }
+                System.out.print(">");
+                for (int i = 0; i < 100 - update - 1; i++) {
+                    System.out.print("-");
+                }
+                System.out.print("](" + update + "%)");
+                dstart = System.currentTimeMillis();
+            }
+            if((System.currentTimeMillis()-ustart)/500 > 1){
+                ustart = System.currentTimeMillis();
+                update ++;
+            }
+        }
+        System.out.println("\rSoftware up to Date!");
+
         //Initialize Queues
         playersAddQueue = new ArrayList<Player>();
         playersDelQueue = new ArrayList<Player>();
@@ -68,6 +107,7 @@ public class Main {
 
 
         //Server Start
+        System.out.println("Initializing Server...");
         new Thread() {
             @Override
             public void run() {
@@ -76,23 +116,32 @@ public class Main {
             }
         }.start();
 
-        //System I
-        new Thread() {
-            @Override
-            public void run() {
-                while(true){
-                    Scanner s = new Scanner(System.in);
-                    if(s.nextLine().equals("exit")) {
-                        killServer();
-                    }
-                }
-            }
-        }.start();
-
         //Logger
+        System.out.println("Attaching Logger...");
         logger = new Logger();
         logger.setInterval(3000);
         long last = 0;
+        System.out.println("Spooling up Main Thread...");
+        update = 0;
+        while(update < 101){
+            if((System.currentTimeMillis() - dstart)/100 > 1) {
+                System.out.print("\r[");
+                for (int i = 0; i < update; i++) {
+                    System.out.print("=");
+                }
+                System.out.print(">");
+                for (int i = 0; i < 100 - update - 1; i++) {
+                    System.out.print("-");
+                }
+                System.out.print("](" + update + "%)");
+                dstart = System.currentTimeMillis();
+            }
+            if((System.currentTimeMillis()-ustart)/100 > 1){
+                ustart = System.currentTimeMillis();
+                update ++;
+            }
+        }
+        System.out.println("\rMain Thread Engaged!");
         while (RUN) {
             long now = System.currentTimeMillis()/1000;
             if(last < now){

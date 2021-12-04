@@ -256,7 +256,7 @@ public class Main {
     public static void killServer(){
         synchronized (Main.server.connections) {
             for (int i = 0; i < server.connections.size(); i++) {
-                server.connections.get(i).sendEvent(new EventKick("Server Shutdown!"));
+                server.connections.get(i).sendEvent(new EventKick("The Game Has Ended!"));
             }
         }
         System.exit(0);

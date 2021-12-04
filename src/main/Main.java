@@ -76,6 +76,19 @@ public class Main {
             }
         }.start();
 
+        //System I
+        new Thread() {
+            @Override
+            public void run() {
+                while(true){
+                    Scanner s = new Scanner(System.in);
+                    if(s.nextLine().equals("exit")) {
+                        killServer();
+                    }
+                }
+            }
+        }.start();
+
         //Logger
         logger = new Logger();
         logger.setInterval(3000);
@@ -238,6 +251,15 @@ public class Main {
                 }
             }
         }
+    }
+
+    public static void killServer(){
+        synchronized (Main.server.connections) {
+            for (int i = 0; i < server.connections.size(); i++) {
+                server.connections.get(i).sendEvent(new EventKick("Server Shutdown!"));
+            }
+        }
+        System.exit(0);
     }
 
     public static void syncQueues(){

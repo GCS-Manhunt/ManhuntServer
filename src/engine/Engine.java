@@ -61,11 +61,11 @@ public class Engine {
                 }
                 else if (hiders.inRange(p1, p2, 20)){
                     //if hiders is close to any
-                    addScore = 10.0/60;
+                    addScore = 10.0/15;
                 }else if(hiders.inRange(p1, p2, 100)){
-                    addScore = 2.0/60;
+                    addScore = 2.0/15;
                 }else if(hiders.inRange(p1, p2, 200)){
-                    addScore = 1.0/60;
+                    addScore = 1.0/15;
                 }
             }
             p1.score += addScore;

@@ -46,7 +46,8 @@ public class PlayerSet {
     }
 
     public Player getPlayer(UUID uuid){
-        return playerList.get(uuid);
+        if(uuid != null) return playerList.get(uuid);
+        return null;
     }
 
     //returns the N closest players to a s

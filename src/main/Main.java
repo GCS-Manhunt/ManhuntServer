@@ -157,6 +157,7 @@ public class Main {
             executeEvents();
             sendEvents();
             engine.checkDisconnect();
+            System.gc();
         }
     }
 

@@ -44,29 +44,29 @@ public class Main {
         }.start();
 
         //'Checking Inet for Updates'
-        System.out.println("Checking For Updates...");
-        long ustart = System.currentTimeMillis();
-        long dstart = System.currentTimeMillis();
-        int update = 0;
-        while(update < 101){
-            if((System.currentTimeMillis() - dstart)/250 > 1) {
-                System.out.print("\r[");
-                for (int i = 0; i < update; i++) {
-                    System.out.print("=");
-                }
-                System.out.print(">");
-                for (int i = 0; i < 100 - update - 1; i++) {
-                    System.out.print("-");
-                }
-                System.out.print("](" + update + "%)");
-                dstart = System.currentTimeMillis();
-            }
-            if((System.currentTimeMillis()-ustart)/500 > 1){
-                ustart = System.currentTimeMillis();
-                update ++;
-            }
-        }
-        System.out.println("\nSoftware up to Date!");
+//        System.out.println("Checking For Updates...");
+//        long ustart = System.currentTimeMillis();
+//        long dstart = System.currentTimeMillis();
+//        int update = 0;
+//        while(update < 101){
+//            if((System.currentTimeMillis() - dstart)/250 > 1) {
+//                System.out.print("\r[");
+//                for (int i = 0; i < update; i++) {
+//                    System.out.print("=");
+//                }
+//                System.out.print(">");
+//                for (int i = 0; i < 100 - update - 1; i++) {
+//                    System.out.print("-");
+//                }
+//                System.out.print("](" + update + "%)");
+//                dstart = System.currentTimeMillis();
+//            }
+//            if((System.currentTimeMillis()-ustart)/500 > 1){
+//                ustart = System.currentTimeMillis();
+//                update ++;
+//            }
+//        }
+//        System.out.println("\nSoftware up to Date!");
 
         //Initialize Queues
         playersAddQueue = new ArrayList<Player>();
@@ -121,27 +121,27 @@ public class Main {
         logger = new Logger();
         logger.setInterval(3000);
         long last = 0;
-        System.out.println("Spooling up Main Thread...");
-        update = 0;
-        while(update < 101){
-            if((System.currentTimeMillis() - dstart)/100 > 1) {
-                System.out.print("\r[");
-                for (int i = 0; i < update; i++) {
-                    System.out.print("=");
-                }
-                System.out.print(">");
-                for (int i = 0; i < 100 - update - 1; i++) {
-                    System.out.print("-");
-                }
-                System.out.print("](" + update + "%)");
-                dstart = System.currentTimeMillis();
-            }
-            if((System.currentTimeMillis()-ustart)/100 > 1){
-                ustart = System.currentTimeMillis();
-                update ++;
-            }
-        }
-        System.out.println("\nMain Thread Engaged!");
+//        System.out.println("Spooling up Main Thread...");
+//        update = 0;
+//        while(update < 101){
+//            if((System.currentTimeMillis() - dstart)/100 > 1) {
+//                System.out.print("\r[");
+//                for (int i = 0; i < update; i++) {
+//                    System.out.print("=");
+//                }
+//                System.out.print(">");
+//                for (int i = 0; i < 100 - update - 1; i++) {
+//                    System.out.print("-");
+//                }
+//                System.out.print("](" + update + "%)");
+//                dstart = System.currentTimeMillis();
+//            }
+//            if((System.currentTimeMillis()-ustart)/100 > 1){
+//                ustart = System.currentTimeMillis();
+//                update ++;
+//            }
+//        }
+//        System.out.println("\nMain Thread Engaged!");
         while (RUN) {
             long now = System.currentTimeMillis()/1000;
             if(last < now){

@@ -241,6 +241,7 @@ public class Main {
                     if(closest == null){
                         return;
                     }
+                    System.out.println(Arrays.toString(closest));
                     for (Player p : closest) {
                         synchronized (server.connections.get(i).events) {
                             server.connections.get(i).events.add(new EventSendHeading(player.heading(p), p.uuid));

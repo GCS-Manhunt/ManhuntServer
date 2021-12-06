@@ -83,6 +83,8 @@ public class PlayerSet {
         while (i < nclosest.size()){
             if (nclosest.get(i).distance(origin) > 1.5 * adist){
                 nclosest.remove(i);
+            }else {
+                i++;
             }
         }
         return nclosest.toArray(new Player[nclosest.size()]);

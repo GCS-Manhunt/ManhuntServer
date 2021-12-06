@@ -66,7 +66,6 @@ public class Player implements Comparable<Player>{
                 * Math.pow(Math.sin(dlon / 2),2);
 
         double c = 2 * Math.asin(Math.sqrt(a));
-
         // Radius of earth in kilometers. Use 3956
         // for miles
         double r = 6371 * 1000;

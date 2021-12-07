@@ -108,6 +108,7 @@ public class Main {
                 executeEvents();
                 sendEvents();
                 engine.checkDisconnect();
+                logger.printlog();
             } catch (NullPointerException e){}
         }
     }

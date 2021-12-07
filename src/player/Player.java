@@ -86,8 +86,13 @@ public class Player implements Comparable<Player>{
         double lat2 = p.location[0];
         double lon1 = this.location[1];
         double lon2 = p.location[1];
-        return Math.toDegrees(Math.atan2(Math.cos(lat1)*Math.sin(lat2)-Math.sin(lat1)*Math.cos(lat2)*Math.cos(lon2-lon1),
-                Math.sin(lon2-lon1)*Math.cos(lat2)) );
+        double x = Math.cos(lat1)*Math.sin(lat2)-Math.sin(lat1)*Math.cos(lat2)*Math.cos(lon2-lon1);
+        double y = Math.sin(lon2-lon1)*Math.cos(lat2);
+        if(x > 0) {
+            return Math.toDegrees(Math.atan2(x, y));
+        }else{
+            return Math.toDegrees(Math.atan2(x,y)+180);
+        }
 
     }
 
@@ -96,7 +101,8 @@ public class Player implements Comparable<Player>{
                 (Math.sin(lat) * Math.cos(lat) * Math.cos(lon-lat));
         double y = Math.sin(lon-this.location[1]) * Math.cos(lat);
         double h = Math.toDegrees(Math.atan2(y, x));
-        return h;
+        if(x > 0) return h;
+        else return h + 180;
     }
 
     public boolean equals(Object o){

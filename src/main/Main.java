@@ -93,19 +93,21 @@ public class Main {
 
         long last = 0;
         while (RUN) {
-            long now = System.currentTimeMillis()/1000;
-            if(last < now){
-                last = now;
-                engine.hiderScore();
-                sendHeadings();
-                rank();
-                checkInRange();
-                stillInRange();
-            }
-            syncQueues();
-            executeEvents();
-            sendEvents();
-            engine.checkDisconnect();
+            try {
+                long now = System.currentTimeMillis() / 1000;
+                if (last < now) {
+                    last = now;
+                    engine.hiderScore();
+                    sendHeadings();
+                    rank();
+                    checkInRange();
+                    stillInRange();
+                }
+                syncQueues();
+                executeEvents();
+                sendEvents();
+                engine.checkDisconnect();
+            } catch (NullPointerException e){}
         }
     }
 

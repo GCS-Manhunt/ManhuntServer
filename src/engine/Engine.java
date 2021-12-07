@@ -138,13 +138,13 @@ public class Engine {
     }
 
     public void checkDisconnect(){
-        for(UUID uuid : seekers.uuids){
-            if(!seekers.getPlayer(uuid).status){
+        for (UUID uuid : seekers.uuids) {
+            if (!seekers.getPlayer(uuid).status) {
                 quarantined.addPlayer(seekers.removePlayer(uuid));
             }
         }
-        for(UUID uuid : hiders.uuids){
-            if(!hiders.getPlayer(uuid).status){
+        for (UUID uuid : hiders.uuids) {
+            if (!hiders.getPlayer(uuid).status) {
                 quarantined.addPlayer(hiders.removePlayer(uuid));
             }
         }

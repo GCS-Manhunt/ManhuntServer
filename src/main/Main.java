@@ -91,6 +91,7 @@ public class Main {
             }
         }.start();
 
+        logger = new Logger();
         long last = 0;
         while (RUN) {
             try {
@@ -245,6 +246,7 @@ public class Main {
                     }
                     for (Player p : closest) {
                         synchronized (server.connections.get(i).events) {
+                            logger.log("Heading", Double.toString(player.heading(p)));
                             server.connections.get(i).events.add(new EventSendHeading(player.heading(p), p.uuid));
                         }
                     }
